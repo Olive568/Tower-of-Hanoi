@@ -11,16 +11,17 @@ namespace Tower_of_Hanoi
 {
     internal class Program
     {
-        static void Main(string[] args)
+         static void Main(string[] args)
         {
             int discs = 0;
-            int towers = 3;
-            List<int> zero = new List<int>();
-            List<int> one = new List<int>();
-            List<int> Two = new List<int>();
+            List<int>[] towers = new List<int>[3];
             string line = "";
             string[] start = new string[2];
             int[] settings = new int[2];
+            for (int i = 0; i < 3; i++)
+            {
+                towers[i] = new List<int>();
+            }
             StreamReader sr = new StreamReader("Setup.ini");
             {
                 while ((line = sr.ReadLine()) != null)
@@ -30,6 +31,7 @@ namespace Tower_of_Hanoi
                     settings[1] = int.Parse(start[1]);
                 }
             }
+            int tower = settings[0] - 1;
             if (settings[1] == 1)
                 discs = 3;
             else if (settings[1] == 2)
@@ -40,13 +42,12 @@ namespace Tower_of_Hanoi
             }
             for (int i = discs; i > 0; i--)
             {
-                zero.Add(i);
+                towers[tower].Add(i); 
             }
-            for (int x = zero.Count; x > 0; x--)
+            for (int x = towers[tower].Count; x > 0; x--)
             {
-
-                    Console.Write("=");
-                for (int y = zero[x - 1]; y > 0; y--)
+                Console.Write("=");
+                for (int y = towers[tower][x - 1]; y > 0; y--)
                 {
                     Console.Write("==");
                 }
