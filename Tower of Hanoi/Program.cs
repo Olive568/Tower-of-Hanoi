@@ -21,7 +21,7 @@ namespace Tower_of_Hanoi
             string line = "";
             string[] start = new string[2];
             int[] settings = new int[2];
-            StreamReader sr = new StreamReader("Setup.ini");
+            using (StreamReader sr = new StreamReader("Setup.ini"))
             {
                 while ((line = sr.ReadLine()) != null)
                 {
@@ -82,33 +82,44 @@ namespace Tower_of_Hanoi
             if (a >= 3 || b >= 3 || a < 0 || b < 0)
             {
                 Console.WriteLine("Invalid coordinates. Press any key to continue.");
+                Console.ReadKey();
                 Console.Clear();
                 game(discs, tower, ref towers);
             }
             else if (towers[a, 0] == 0)
             {
                 Console.WriteLine("No disc to move. Press any key to continue.");
+                Console.ReadKey();
                 Console.Clear();
                 game(discs, tower, ref towers);
             }
             else
             {
                 int temp = 0;
-                for (int x = towers.GetLength(a) -1; x > 0; x++)
+                for (int x = towers.GetLength(a) - 1; x >= 0; x--)
                 {
-                    if (towers[a,x] > 1)
+                    if (towers[a,x] > 0)
                     {
                         temp = towers[a,x];
+                        towers[a, x] = 0;
+                        break;
+                    }
+                    else if (towers[a,x] == 0)
+                    {
+                        temp = towers[a, x];
+                        towers[a, x] = 0;
                     }
 
                 }
-                for (int i = towers.GetLength(b) -1; i > 0 ; i++)
+                for (int i = towers.GetLength(b) -1; i >= 0 ; i--)
                 {
-                    if (towers[b, i] > 1)
+                    if (towers[b, i] > 0)
                     {
-                        towers[b,i] = temp;
+                        i += 1;
+                        towers[b,i]  = temp;
+                        break;
                     }
-                    else if (i == 1)
+                    else if (i == 0)
                     {
                         towers[b,i] = temp;
 
