@@ -96,7 +96,7 @@ namespace Tower_of_Hanoi
             else
             {
                 int temp = 0;
-                for (int x = towers.GetLength(a) - 1; x >= 0; x--)
+                for (int x = discs - 1; x >= 0; x--)
                 {
                     if (towers[a,x] > 0)
                     {
@@ -111,7 +111,7 @@ namespace Tower_of_Hanoi
                     }
 
                 }
-                for (int i = towers.GetLength(b) -1; i >= 0 ; i--)
+                for (int i = discs -1; i >= 0 ; i--)
                 {
                     if (towers[b, i] > 0)
                     {
