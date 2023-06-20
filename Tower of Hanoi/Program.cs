@@ -32,7 +32,6 @@ namespace Tower_of_Hanoi
             }
             #endregion
             #region Discs
-            int tower = settings[0] - 1;
             if (settings[1] == 1)
                 discs = 3;
             else if (settings[1] == 2)
@@ -44,14 +43,14 @@ namespace Tower_of_Hanoi
             towers = new int[3, discs];
             for (int i = discs; i > 0; i--)
             {
-                towers[tower, discs - i] = i;
+                towers[0, discs - i] = i;
             }
             #endregion
-            game(discs, tower, ref towers);
+            game(discs,  ref towers);
             Console.ReadKey();
         }
 
-        static void display(int discs, int tower, ref int[,] towers)
+        static void display(int discs, ref int[,] towers)
         {
             for (int y = discs - 1; y >= 0; y--)
             {
@@ -68,11 +67,12 @@ namespace Tower_of_Hanoi
             }
         }
 
-        static void game(int discs, int tower, ref int[,] towers)
+        static void game(int discs, ref int[,] towers)
         {
-            display(discs, tower, ref towers);
+            display(discs, ref towers);
             int a = 0;
             int b = 0;
+            int save = 0;
             Console.WriteLine("Put in 2 numbers, the first one is the tower from which you want to remove the disc, and the second one is the tower where you will put the disc.");
             Console.WriteLine("Tower of the disc you want to remove (0, 1, 2): ");
             a = int.Parse(Console.ReadLine());
@@ -84,17 +84,17 @@ namespace Tower_of_Hanoi
                 Console.WriteLine("Invalid coordinates. Press any key to continue.");
                 Console.ReadKey();
                 Console.Clear();
-                game(discs, tower, ref towers);
+                game(discs, ref towers);
             }
             else if (towers[a, 0] == 0)
             {
                 Console.WriteLine("No disc to move. Press any key to continue.");
                 Console.ReadKey();
                 Console.Clear();
-                game(discs, tower, ref towers);
+                game(discs, ref towers);
             }
             else
-            {
+            {                
                 int temp = 0;
                 for (int x = discs - 1; x >= 0; x--)
                 {
@@ -102,31 +102,43 @@ namespace Tower_of_Hanoi
                     {
                         temp = towers[a,x];
                         towers[a, x] = 0;
+                        save = x;
                         break;
                     }
                     else if (towers[a,x] == 0)
                     {
                         temp = towers[a, x];
                         towers[a, x] = 0;
+                        save = x;
                     }
 
                 }
                 for (int i = discs -1; i >= 0 ; i--)
                 {
-                    if (towers[b, i] > 0)
+
+                    if (towers[b, i] > 0 && towers[b, i] < temp)
                     {
-                        i += 1;
-                        towers[b,i]  = temp;
+                        towers[a, save] = temp;
+                        Console.WriteLine("ring is too big, press any key to continue");
+                        Console.ReadKey();
+                        Console.Clear();
                         break;
                     }
                     else if (i == 0)
                     {
-                        towers[b,i] = temp;
-
+                        towers[b, i] = temp;
+                        break;
                     }
+                    else if (towers[b, i] > 0)
+                    {
+                        i += 1;
+                        towers[b, i] = temp;
+                        break;
+                    }
+                    
                 }
             }
-            game(discs, tower, ref towers);
+            game(discs, ref towers);
 
         }
     }
