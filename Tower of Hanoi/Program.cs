@@ -6,22 +6,21 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Collections;
 using System.Runtime.CompilerServices;
+using System.ComponentModel.Design;
+using System.Data.SqlClient;
 
 namespace Tower_of_Hanoi
 {
     internal class Program
     {
-         static void Main(string[] args)
+        static void Main(string[] args)
         {
+            #region Inititialization
             int discs = 0;
-            List<int>[] towers = new List<int>[3];
+            int[,] towers = null;
             string line = "";
             string[] start = new string[2];
             int[] settings = new int[2];
-            for (int i = 0; i < 3; i++)
-            {
-                towers[i] = new List<int>();
-            }
             StreamReader sr = new StreamReader("Setup.ini");
             {
                 while ((line = sr.ReadLine()) != null)
@@ -31,6 +30,8 @@ namespace Tower_of_Hanoi
                     settings[1] = int.Parse(start[1]);
                 }
             }
+            #endregion
+            #region Discs
             int tower = settings[0] - 1;
             if (settings[1] == 1)
                 discs = 3;
@@ -40,20 +41,82 @@ namespace Tower_of_Hanoi
             {
                 discs = 7;
             }
+            towers = new int[3, discs];
             for (int i = discs; i > 0; i--)
             {
-                towers[tower].Add(i); 
+                towers[tower, discs - i] = i;
             }
-            for (int x = towers[tower].Count; x > 0; x--)
+            #endregion
+            game(discs, tower, ref towers);
+            Console.ReadKey();
+        }
+
+        static void display(int discs, int tower, ref int[,] towers)
+        {
+            for (int y = discs - 1; y >= 0; y--)
             {
-                Console.Write("=");
-                for (int y = towers[tower][x - 1]; y > 0; y--)
+                for (int x = 0; x < 3; x++)
                 {
-                    Console.Write("==");
+                    Console.Write("=");
+                    for (int z = 0; z < towers[x, y]; z++)
+                    {
+                        Console.Write("==");
+                    }
+                    Console.Write("\t" + "\t");
                 }
                 Console.WriteLine();
             }
-            Console.ReadKey();
+        }
+
+        static void game(int discs, int tower, ref int[,] towers)
+        {
+            display(discs, tower, ref towers);
+            int a = 0;
+            int b = 0;
+            Console.WriteLine("Put in 2 numbers, the first one is the tower from which you want to remove the disc, and the second one is the tower where you will put the disc.");
+            Console.WriteLine("Tower of the disc you want to remove (0, 1, 2): ");
+            a = int.Parse(Console.ReadLine());
+            Console.WriteLine("Tower where you want to put the disc (0, 1, 2): ");
+            b = int.Parse(Console.ReadLine());
+            Console.Clear();
+            if (a >= 3 || b >= 3 || a < 0 || b < 0)
+            {
+                Console.WriteLine("Invalid coordinates. Press any key to continue.");
+                Console.Clear();
+                game(discs, tower, ref towers);
+            }
+            else if (towers[a, 0] == 0)
+            {
+                Console.WriteLine("No disc to move. Press any key to continue.");
+                Console.Clear();
+                game(discs, tower, ref towers);
+            }
+            else
+            {
+                int temp = 0;
+                for (int x = towers.GetLength(a) -1; x > 0; x++)
+                {
+                    if (towers[a,x] > 1)
+                    {
+                        temp = towers[a,x];
+                    }
+
+                }
+                for (int i = towers.GetLength(b) -1; i > 0 ; i++)
+                {
+                    if (towers[b, i] > 1)
+                    {
+                        towers[b,i] = temp;
+                    }
+                    else if (i == 1)
+                    {
+                        towers[b,i] = temp;
+
+                    }
+                }
+            }
+            game(discs, tower, ref towers);
+
         }
     }
 }
