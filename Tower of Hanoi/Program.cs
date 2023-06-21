@@ -16,6 +16,7 @@ namespace Tower_of_Hanoi
         static void Main(string[] args)
         {
             #region Inititialization
+            List<string> history = new List<string>();
             int discs = 0;
             int[,] towers = null;
             string line = "";
@@ -46,7 +47,7 @@ namespace Tower_of_Hanoi
                 towers[0, discs - i] = i;
             }
             #endregion
-            game(discs,  ref towers);
+            game(discs,  ref towers, ref history);
             Console.ReadKey();
         }
 
@@ -67,7 +68,7 @@ namespace Tower_of_Hanoi
             }
         }
 
-        static void game(int discs, ref int[,] towers)
+        static void game(int discs, ref int[,] towers, ref List<string> history)
         {
             display(discs, ref towers);
             int a = 0;
@@ -94,7 +95,8 @@ namespace Tower_of_Hanoi
                 game(discs, ref towers);
             }
             else
-            {                
+            {    
+                
                 int temp = 0;
                 for (int x = discs - 1; x >= 0; x--)
                 {
@@ -124,22 +126,58 @@ namespace Tower_of_Hanoi
                         Console.Clear();
                         break;
                     }
-                    else if (i == 0)
+                    else if(i == 0 && towers[b, i] == 0)
                     {
-                        towers[b, i] = temp;
+                        towers[b,i] = temp;
                         break;
                     }
-                    else if (towers[b, i] > 0)
-                    {
-                        i += 1;
-                        towers[b, i] = temp;
+                    else if(towers[b,i] > 0)
+                        {
+                        towers[b,i +1] = temp;
                         break;
                     }
                     
+                    
                 }
             }
-            game(discs, ref towers);
+            checking(towers,discs);
+            game(discs, ref towers, ref history);
 
+        }
+        static void checking(ref int[,] towers, int discs)
+        {
+            int sum = 0;
+            for(int x = 0; x < discs; x++)
+            {
+                sum = towers[2,x] + sum;
+            }
+            if(discs == 3)
+            {
+                if(sum == 6)
+                    win();
+                else
+                    game();
+            }
+            else if(discs == 5)
+            {
+                if(sum == 15)
+                    win();
+                else
+                    game();
+            }
+            else if(discs == 7)
+            {
+                if(sum == 28)
+                    win();
+                else
+                    game();
+            }
+        }
+        static void win()
+        {
+            Console.Clear();
+            Console.WriteLine("you win");
+            Console.ReadKey();
         }
     }
 }
