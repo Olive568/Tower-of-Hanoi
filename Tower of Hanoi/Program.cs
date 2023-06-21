@@ -15,7 +15,6 @@ namespace Tower_of_Hanoi
     {
         static void Main(string[] args)
         {
-            #region Inititialization
             List<string> history = new List<string>();
             int discs = 0;
             int[,] towers = null;
@@ -31,26 +30,22 @@ namespace Tower_of_Hanoi
                     settings[1] = int.Parse(start[1]);
                 }
             }
-            #endregion
-            #region Discs
             if (settings[1] == 1)
                 discs = 3;
             else if (settings[1] == 2)
                 discs = 5;
             else if (settings[1] == 3)
-            {
                 discs = 7;
-            }
+
             towers = new int[3, discs];
             for (int i = discs; i > 0; i--)
             {
                 towers[0, discs - i] = i;
             }
-            #endregion
-            game(discs,  ref towers, );
+
+            game(discs, ref towers);
             Console.ReadKey();
         }
-
         static void display(int discs, ref int[,] towers)
         {
             for (int y = discs - 1; y >= 0; y--)
@@ -67,8 +62,7 @@ namespace Tower_of_Hanoi
                 Console.WriteLine();
             }
         }
-
-        static void game(int discs, ref int[,] towers, ref List<string> history)
+        static void game(int discs, ref int[,] towers)
         {
             display(discs, ref towers);
             int a = 0;
@@ -85,98 +79,93 @@ namespace Tower_of_Hanoi
                 Console.WriteLine("Invalid coordinates. Press any key to continue.");
                 Console.ReadKey();
                 Console.Clear();
-                game(discs, ref towers, ref history);
+                game(discs, ref towers);
             }
             else if (towers[a, 0] == 0)
             {
                 Console.WriteLine("No disc to move. Press any key to continue.");
                 Console.ReadKey();
                 Console.Clear();
-                game(discs, ref towers, ref history);
+                game(discs, ref towers);
             }
             else
-            {    
-                
+            {
                 int temp = 0;
                 for (int x = discs - 1; x >= 0; x--)
                 {
-                    if (towers[a,x] > 0)
+                    if (towers[a, x] > 0)
                     {
-                        temp = towers[a,x];
+                        temp = towers[a, x];
                         towers[a, x] = 0;
                         save = x;
                         break;
                     }
-                    else if (towers[a,x] == 0)
+                    else if (towers[a, x] == 0)
                     {
                         temp = towers[a, x];
                         towers[a, x] = 0;
                         save = x;
                     }
-
                 }
-                for (int i = discs -1; i >= 0 ; i--)
+                for (int i = discs - 1; i >= 0; i--)
                 {
-
                     if (towers[b, i] > 0 && towers[b, i] < temp)
                     {
                         towers[a, save] = temp;
-                        Console.WriteLine("ring is too big, press any key to continue");
+                        Console.WriteLine("Ring is too big. Press any key to continue.");
                         Console.ReadKey();
                         Console.Clear();
                         break;
                     }
-                    else if(i == 0 && towers[b, i] == 0)
+                    else if (i == 0 && towers[b, i] == 0)
                     {
-                        towers[b,i] = temp;
+                        towers[b, i] = temp;
                         break;
                     }
-                    else if(towers[b,i] > 0)
-                        {
-                        towers[b,i +1] = temp;
+                    else if (towers[b, i] > 0)
+                    {
+                        towers[b, i + 1] = temp;
                         break;
                     }
-                    
-                    
                 }
             }
-            checking(ref towers,discs,ref history);
-            game(discs, ref towers, ref history);
-
+            checking(ref towers, discs);
+            game(discs, ref towers);
         }
-        static void checking(ref int[,] towers, int discs,ref List<string> history)
+        static void checking(ref int[,] towers, int discs)
         {
             int sum = 0;
-            for(int x = 0; x < discs; x++)
+            for (int x = 0; x < discs; x++)
             {
-                sum = towers[2,x] + sum;
+                sum = towers[2, x] + sum;
             }
-            if(discs == 3)
+
+            if (discs == 3)
             {
-                if(sum == 6)
+                if (sum == 6)
                     win();
                 else
-                    game(discs, ref towers, ref history);
+                    game(discs, ref towers);
             }
-            else if(discs == 5)
+            else if (discs == 5)
             {
-                if(sum == 15)
+                if (sum == 15)
                     win();
                 else
-                   game(discs, ref towers, ref history);
+                    game(discs, ref towers);
             }
-            else if(discs == 7)
+            else if (discs == 7)
             {
-                if(sum == 28)
+                if (sum == 28)
                     win();
                 else
-                    game(discs, ref towers, ref history);
+                    game(discs, ref towers);
             }
         }
         static void win()
         {
             Console.Clear();
-            Console.WriteLine("you win");
+            Console.WriteLine("You win!");
             Console.ReadKey();
         }
     }
