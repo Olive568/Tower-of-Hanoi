@@ -47,7 +47,7 @@ namespace Tower_of_Hanoi
                 towers[0, discs - i] = i;
             }
             #endregion
-            game(discs,  ref towers, ref history);
+            game(discs,  ref towers, );
             Console.ReadKey();
         }
 
@@ -85,14 +85,14 @@ namespace Tower_of_Hanoi
                 Console.WriteLine("Invalid coordinates. Press any key to continue.");
                 Console.ReadKey();
                 Console.Clear();
-                game(discs, ref towers);
+                game(discs, ref towers, ref history);
             }
             else if (towers[a, 0] == 0)
             {
                 Console.WriteLine("No disc to move. Press any key to continue.");
                 Console.ReadKey();
                 Console.Clear();
-                game(discs, ref towers);
+                game(discs, ref towers, ref history);
             }
             else
             {    
@@ -140,11 +140,11 @@ namespace Tower_of_Hanoi
                     
                 }
             }
-            checking(towers,discs);
+            checking(ref towers,discs,ref history);
             game(discs, ref towers, ref history);
 
         }
-        static void checking(ref int[,] towers, int discs)
+        static void checking(ref int[,] towers, int discs,ref List<string> history)
         {
             int sum = 0;
             for(int x = 0; x < discs; x++)
@@ -156,21 +156,21 @@ namespace Tower_of_Hanoi
                 if(sum == 6)
                     win();
                 else
-                    game();
+                    game(discs, ref towers, ref history);
             }
             else if(discs == 5)
             {
                 if(sum == 15)
                     win();
                 else
-                    game();
+                   game(discs, ref towers, ref history);
             }
             else if(discs == 7)
             {
                 if(sum == 28)
                     win();
                 else
-                    game();
+                    game(discs, ref towers, ref history);
             }
         }
         static void win()
