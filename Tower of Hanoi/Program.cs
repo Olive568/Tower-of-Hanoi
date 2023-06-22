@@ -65,7 +65,9 @@ namespace Tower_of_Hanoi
                     Console.Write("\t" + "\t");
                 }
                 Console.WriteLine();
+
             }
+             f
         }
         static void game(int discs, ref int[,] towers, ref int attempt)
         {
@@ -74,7 +76,7 @@ namespace Tower_of_Hanoi
             int a = 0;
             int b = 0;
             int save = 0;
-            Console.WriteLine("\n" + "What would you like your move to be?");
+           Console.WriteLine("\n" + "What would you like your move to be?");
             Console.WriteLine("\n" +"\n" +"\n");
             Console.WriteLine("move format is X-Y");
             Console.WriteLine("X is the number of the tower the disc will come from");
@@ -86,7 +88,6 @@ namespace Tower_of_Hanoi
             ans = answer.Split('-');
             a = int.Parse(ans[0]);
             b = int.Parse(ans[1]);
-            Console.ReadKey();
             Console.Clear();
             if (a >= 3 || b >= 3 || a < 0 || b < 0)
             {
@@ -157,29 +158,37 @@ namespace Tower_of_Hanoi
             if (discs == 3)
             {
                 if (sum == 6)
-                    win();
+                    win(ref attempt,ref towers, discs);
                 else
                     game(discs, ref towers,ref attempt);
             }
             else if (discs == 5)
             {
                 if (sum == 15)
-                    win();
+                    win(ref attempt,ref towers, discs);
                 else
                     game(discs, ref towers,ref attempt);
             }
             else if (discs == 7)
             {
                 if (sum == 28)
-                    win();
+                    win(ref attempt,ref towers, discs);
                 else
                     game(discs, ref towers,ref attempt);
             }
         }
-        static void win()
+        static void win(ref int attempt, ref int[] towers, int discs)
         {
             Console.Clear();
-            Console.WriteLine("You win!");
+            display(discs, ref towers,ref attempt);
+            Console.WriteLine("\n" + "What would you like your move to be?");
+            Console.WriteLine("\n" +"\n" +"\n");
+            Console.WriteLine("move format is X-Y");
+            Console.WriteLine("X is the number of the tower the disc will come from");
+            Console.WriteLine("Y is the number of the tower the disc will go to");
+            Console.WriteLine("Rules to Remember");
+            Console.WriteLine("A larger disc cannot be on top of a smaller disk");
+            Console.WriteLine("The goal of this game is to transfer discs from tower 0 to tower 2");
             Console.ReadKey();
         }
     }
