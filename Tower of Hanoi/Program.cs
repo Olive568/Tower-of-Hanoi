@@ -15,6 +15,7 @@ namespace Tower_of_Hanoi
     {
         static void Main(string[] args)
         {
+            int attempts = 0;
             List<string> history = new List<string>();
             int discs = 0;
             int[,] towers = null;
@@ -43,11 +44,18 @@ namespace Tower_of_Hanoi
                 towers[0, discs - i] = i;
             }
 
-            game(discs, ref towers);
+            game(discs, ref towers,ref attempts);
             Console.ReadKey();
         }
-        static void display(int discs, ref int[,] towers)
+
+
+
+
+
+
+        static void display(int discs, ref int[,] towers, ref int attempts)
         {
+            Console.WriteLine(attempts + " attempts")
             for (int y = discs - 1; y >= 0; y--)
             {
                 for (int x = 0; x < 3; x++)
@@ -62,9 +70,15 @@ namespace Tower_of_Hanoi
                 Console.WriteLine();
             }
         }
-        static void game(int discs, ref int[,] towers)
+
+
+
+
+
+
+        static void game(int discs, ref int[,] towers , ref int attempts)
         {
-            display(discs, ref towers);
+            display(discs, ref towers, ref attempts);
             int a = 0;
             int b = 0;
             int save = 0;
@@ -79,17 +93,18 @@ namespace Tower_of_Hanoi
                 Console.WriteLine("Invalid coordinates. Press any key to continue.");
                 Console.ReadKey();
                 Console.Clear();
-                game(discs, ref towers);
+                game(discs, ref towers,ref attempts);
             }
             else if (towers[a, 0] == 0)
             {
                 Console.WriteLine("No disc to move. Press any key to continue.");
                 Console.ReadKey();
                 Console.Clear();
-                game(discs, ref towers);
+                game(discs, ref towers, ref attempts);
             }
             else
             {
+                attempts++;
                 int temp = 0;
                 for (int x = discs - 1; x >= 0; x--)
                 {
@@ -129,10 +144,15 @@ namespace Tower_of_Hanoi
                     }
                 }
             }
-            checking(ref towers, discs);
-            game(discs, ref towers);
+            checking(ref towers, discs, ref attempts);
+            game(discs, ref towers, ref attempts);
         }
-        static void checking(ref int[,] towers, int discs)
+
+
+
+
+
+        static void checking(ref int[,] towers, int discs, ref int attempts)
         {
             int sum = 0;
             for (int x = 0; x < discs; x++)
@@ -145,23 +165,27 @@ namespace Tower_of_Hanoi
                 if (sum == 6)
                     win();
                 else
-                    game(discs, ref towers);
+                    game(discs, ref towers, ref attempts);
             }
             else if (discs == 5)
             {
                 if (sum == 15)
                     win();
                 else
-                    game(discs, ref towers);
+                    game(discs, ref towers, ref attempts);
             }
             else if (discs == 7)
             {
                 if (sum == 28)
                     win();
                 else
-                    game(discs, ref towers);
+                    game(discs, ref towers, ref attempts);
             }
         }
+
+
+
+
         static void win()
         {
             Console.Clear();
