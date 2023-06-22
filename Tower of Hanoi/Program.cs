@@ -50,7 +50,9 @@ namespace Tower_of_Hanoi
         }
         static void display(int discs, ref int[,] towers, ref int attempt)
         {
-            Console.WriteLine(attempt + " attempts");
+            Console.WriteLine("welcome to tower of Hanoi.");
+            Console.WriteLine("current move count : " + attempt);
+            Console.WriteLine("\n" +"\n" +"\n" +"\n");
             for (int y = discs - 1; y >= 0; y--)
             {
                 for (int x = 0; x < 3; x++)
@@ -68,14 +70,23 @@ namespace Tower_of_Hanoi
         static void game(int discs, ref int[,] towers, ref int attempt)
         {
             display(discs, ref towers,ref attempt);
+            string[] ans = new string[2];
             int a = 0;
             int b = 0;
             int save = 0;
-            Console.WriteLine("Put in 2 numbers, the first one is the tower from which you want to remove the disc, and the second one is the tower where you will put the disc.");
-            Console.WriteLine("Tower of the disc you want to remove (0, 1, 2): ");
-            a = int.Parse(Console.ReadLine());
-            Console.WriteLine("Tower where you want to put the disc (0, 1, 2): ");
-            b = int.Parse(Console.ReadLine());
+            Console.WriteLine("\n" + "What would you like your move to be?");
+            Console.WriteLine("\n" +"\n" +"\n");
+            Console.WriteLine("move format is X-Y");
+            Console.WriteLine("X is the number of the tower the disc will come from");
+            Console.WriteLine("Y is the number of the tower the disc will go to");
+            Console.WriteLine("Rules to Remember");
+            Console.WriteLine("A larger disc cannot be on top of a smaller disk");
+            Console.WriteLine("The goal of this game is to transfer discs from tower 0 to tower 2");
+            string answer = Console.ReadLine();
+            ans = answer.Split('-');
+            a = int.Parse(ans[0]);
+            b = int.Parse(ans[1]);
+            Console.ReadKey();
             Console.Clear();
             if (a >= 3 || b >= 3 || a < 0 || b < 0)
             {
@@ -133,7 +144,7 @@ namespace Tower_of_Hanoi
                     }
                 }
             }
-            checking(ref towers, discs);
+            checking(ref towers, discs, ref attempt);
         }
         static void checking(ref int[,] towers, int discs,ref int attempt)
         {
