@@ -16,6 +16,8 @@ namespace Tower_of_Hanoi
     {
         static void Main(string[] args)
         {
+            string diff = "";
+            int score = 0;
             List<string> history = new List<string>();
             int attempt = 0;
             int discs = 0;
@@ -32,19 +34,31 @@ namespace Tower_of_Hanoi
                     settings[1] = int.Parse(start[1]);
                 }
             }
-            if (settings[1] == 1)
-                discs = 3;
-            else if (settings[1] == 2)
-                discs = 5;
-            else if (settings[1] == 3)
-                discs = 7;
 
+            if (settings[1] == 1)
+            {
+                discs = 3;
+                diff = "easy";
+            }
+            if (settings[1] == 2)
+            {
+                discs = 5;
+                diff = "medium";
+            }
+            if (settings[1] == 3)
+            {
+                discs = 7;
+                diff = "hard";
+            }
             towers = new int[3, discs];
             for (int i = discs; i > 0; i--)
             {
                 towers[0, discs - i] = i;
             }
-
+            using(StreamWriter sr = new StreamWriter("moves.txt",true))
+            {
+                sr.WriteLine("this is the move history for the last played game of " + diff + " difficulty");
+            }
             game(discs, ref towers, ref attempt);
             Console.ReadKey();
         }
@@ -57,9 +71,11 @@ namespace Tower_of_Hanoi
             {
                 for (int x = 0; x < 3; x++)
                 {
+                    ConsoleColor diskColor = GetDiskColor(y);
+                    Console.ForegroundColor = diskColor;
                     Console.Write("=");
                     for (int z = 0; z < towers[x, y]; z++)
-                    {
+                    {                    
                         Console.Write("==");
                     }
                     Console.Write("\t" + "\t");
@@ -67,11 +83,12 @@ namespace Tower_of_Hanoi
                 Console.WriteLine();
 
             }
-             f
+             
         }
         static void game(int discs, ref int[,] towers, ref int attempt)
         {
             display(discs, ref towers,ref attempt);
+            Console.ForegroundColor = ConsoleColor.Gray;
             string[] ans = new string[2];
             int a = 0;
             int b = 0;
@@ -107,6 +124,7 @@ namespace Tower_of_Hanoi
             {
                 attempt++;
                 int temp = 0;
+                print(a, b, discs);
                 for (int x = discs - 1; x >= 0; x--)
                 {
                     if (towers[a, x] > 0)
@@ -177,12 +195,31 @@ namespace Tower_of_Hanoi
                     game(discs, ref towers,ref attempt);
             }
         }
-        static void win(ref int attempt, ref int[] towers, int discs)
-        {
+        static void win(ref int attempt, ref int[,] towers, int discs)
+        {         
+            double score = 0;
+            double perfscore = 0;
+            if (discs == 3)
+                perfscore = 7;
+            else if (discs == 5)
+                perfscore = 31;
+            else if (discs == 7)
+                perfscore = 127;
             Console.Clear();
             display(discs, ref towers,ref attempt);
-            Console.WriteLine("\n" + "What would you like your move to be?");
-            Console.WriteLine("\n" +"\n" +"\n");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("\n" + "Congratulations! You finished the game in " +attempt +" moves");
+            Console.WriteLine("The perfect scorse is " + perfscore);
+            if(attempt == perfscore)
+            {
+                Console.WriteLine("Wow! You finished with a perfect score of 100!");
+            }
+            else
+            {
+                score = perfscore / attempt * 100;
+                Console.WriteLine("You completed in " + attempt + " moves. your score is " + score);
+            }
+            Console.WriteLine("\n");
             Console.WriteLine("move format is X-Y");
             Console.WriteLine("X is the number of the tower the disc will come from");
             Console.WriteLine("Y is the number of the tower the disc will go to");
@@ -190,6 +227,21 @@ namespace Tower_of_Hanoi
             Console.WriteLine("A larger disc cannot be on top of a smaller disk");
             Console.WriteLine("The goal of this game is to transfer discs from tower 0 to tower 2");
             Console.ReadKey();
+        }
+        static void print(int a, int b, int discs)
+        {
+            using (StreamWriter sr = new StreamWriter("moves.txt",true))
+            {
+                sr.WriteLine("move disk from tower " + a + " to tower " + b);
+            }
+        }
+        static ConsoleColor GetDiskColor(int level)
+        {
+            // Define an array of colors to use for each level
+            ConsoleColor[] colors = { ConsoleColor.Yellow, ConsoleColor.Cyan, ConsoleColor.Magenta, ConsoleColor.Green, ConsoleColor.Red };
+
+            // Use modulo operator to cycle through the colors
+            return colors[level % colors.Length];
         }
     }
 }
