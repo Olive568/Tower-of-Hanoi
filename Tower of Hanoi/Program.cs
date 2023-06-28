@@ -50,7 +50,9 @@ namespace Tower_of_Hanoi
                 discs = 7;
                 diff = "hard";
             }
+            discs = 7;
             towers = new int[3, discs];
+            
             for (int i = discs; i > 0; i--)
             {
                 towers[0, discs - i] = i;
@@ -66,7 +68,7 @@ namespace Tower_of_Hanoi
         {
             Console.WriteLine("welcome to tower of Hanoi.");
             Console.WriteLine("current move count : " + attempt);
-            Console.WriteLine("\n" +"\n" +"\n" +"\n");
+            Console.WriteLine("\n" + "\n" + "\n" + "\n");
             for (int y = discs - 1; y >= 0; y--)
             {
                 for (int x = 0; x < 3; x++)
@@ -74,16 +76,19 @@ namespace Tower_of_Hanoi
                     ConsoleColor diskColor = GetDiskColor(y);
                     Console.ForegroundColor = diskColor;
                     Console.Write("=");
+                    
                     for (int z = 0; z < towers[x, y]; z++)
-                    {                    
+                    {
                         Console.Write("==");
                     }
+                    if (towers[x, y] <= 3)
+                        Console.Write("       ");
                     Console.Write("\t" + "\t");
                 }
                 Console.WriteLine();
 
             }
-             
+
         }
         static void game(int discs, ref int[,] towers, ref int attempt)
         {
@@ -93,7 +98,7 @@ namespace Tower_of_Hanoi
             int a = 0;
             int b = 0;
             int save = 0;
-           Console.WriteLine("\n" + "What would you like your move to be?");
+            Console.WriteLine("\n" + "What would you like your move to be?");
             Console.WriteLine("\n" +"\n" +"\n");
             Console.WriteLine("move format is X-Y");
             Console.WriteLine("X is the number of the tower the disc will come from");
@@ -101,6 +106,7 @@ namespace Tower_of_Hanoi
             Console.WriteLine("Rules to Remember");
             Console.WriteLine("A larger disc cannot be on top of a smaller disk");
             Console.WriteLine("The goal of this game is to transfer discs from tower 0 to tower 2");
+            Console.SetCursorPosition(37, Console.CursorTop - 11);
             string answer = Console.ReadLine();
             ans = answer.Split('-');
             a = int.Parse(ans[0]);
@@ -237,10 +243,7 @@ namespace Tower_of_Hanoi
         }
         static ConsoleColor GetDiskColor(int level)
         {
-            // Define an array of colors to use for each level
             ConsoleColor[] colors = { ConsoleColor.Yellow, ConsoleColor.Cyan, ConsoleColor.Magenta, ConsoleColor.Green, ConsoleColor.Red };
-
-            // Use modulo operator to cycle through the colors
             return colors[level % colors.Length];
         }
     }
