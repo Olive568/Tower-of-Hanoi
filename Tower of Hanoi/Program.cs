@@ -40,19 +40,17 @@ namespace Tower_of_Hanoi
                 discs = 3;
                 diff = "easy";
             }
-            if (settings[1] == 2)
+            else if (settings[1] == 2)
             {
                 discs = 5;
                 diff = "medium";
             }
-            if (settings[1] == 3)
+            else if (settings[1] >= 3)
             {
                 discs = 7;
                 diff = "hard";
             }
-            discs = 7;
             towers = new int[3, discs];
-            
             for (int i = discs; i > 0; i--)
             {
                 towers[0, discs - i] = i;
@@ -73,16 +71,23 @@ namespace Tower_of_Hanoi
             {
                 for (int x = 0; x < 3; x++)
                 {
-                    ConsoleColor diskColor = GetDiskColor(y);
+                    ConsoleColor diskColor = GetDiskColor(towers[x,y]);
                     Console.ForegroundColor = diskColor;
-                    Console.Write("=");
-                    
-                    for (int z = 0; z < towers[x, y]; z++)
+                    for (int z = 7; z > 0; z--)
                     {
-                        Console.Write("==");
+                        if (towers[x,y] < z)
+                            Console.Write(" ");
+                        else if (towers[x,y] >= z)
+                            Console.Write("=");
                     }
-                    if (towers[x, y] <= 3)
-                        Console.Write("       ");
+                    Console.Write("=");
+                    for (int z = 0; z < 7; z++)
+                    {
+                        if (towers[x, y] < z)
+                            Console.Write(" ");
+                        else if (towers[x, y] > z)
+                            Console.Write("=");
+                    }
                     Console.Write("\t" + "\t");
                 }
                 Console.WriteLine();
@@ -243,7 +248,7 @@ namespace Tower_of_Hanoi
         }
         static ConsoleColor GetDiskColor(int level)
         {
-            ConsoleColor[] colors = { ConsoleColor.Yellow, ConsoleColor.Cyan, ConsoleColor.Magenta, ConsoleColor.Green, ConsoleColor.Red };
+            ConsoleColor[] colors = { ConsoleColor.Yellow, ConsoleColor.Cyan, ConsoleColor.Magenta, ConsoleColor.Green, ConsoleColor.Red, ConsoleColor.Blue, ConsoleColor.White };
             return colors[level % colors.Length];
         }
     }
