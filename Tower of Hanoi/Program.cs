@@ -16,6 +16,10 @@ namespace Tower_of_Hanoi
     {
         static void Main(string[] args)
         {
+            using (StreamWriter sr = new StreamWriter("moves.txt"))
+            {
+                sr.Write("");
+            }
             string diff = "";
             int score = 0;
             List<string> history = new List<string>();
