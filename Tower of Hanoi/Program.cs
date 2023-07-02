@@ -34,7 +34,6 @@ namespace Tower_of_Hanoi
                     settings[1] = int.Parse(start[1]);
                 }
             }
-
             if (settings[1] == 1)
             {
                 discs = 3;
@@ -91,9 +90,7 @@ namespace Tower_of_Hanoi
                     Console.Write("\t" + "\t");
                 }
                 Console.WriteLine();
-
             }
-
         }
         static void game(int discs, ref int[,] towers, ref int attempt)
         {
